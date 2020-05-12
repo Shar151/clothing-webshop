@@ -1,24 +1,33 @@
 import React from "react";
 import Section from "../../model/components/sections";
 import "./menu-item.styles.scss";
+import { withRouter } from "react-router-dom";
+import { RouteComponentProps } from "react-router";
 
-// interface MeniItemProps {
-//   section: Section;
-// }
+type MeniItemRoutingProps = RouteComponentProps & {
+  section: Section;
+};
 
-const MenuItem: React.FC<Section> = ({ imageUrl, size, title }) => {
+const MenuItem: React.FC<MeniItemRoutingProps> = ({
+  section,
+  history,
+  match,
+}) => {
   return (
-    <div className={`${size} menu-item`}>
+    <div
+      className={`${section.size} menu-item`}
+      onClick={() => history.push(`${match.url}${section.linkUrl}`)}
+    >
       <div
         className="background-image"
-        style={{ backgroundImage: `url(${imageUrl})` }}
+        style={{ backgroundImage: `url(${section.imageUrl})` }}
       />
       <div className="content">
-        <h1 className="title">{title.toUpperCase()}</h1>
+        <h1 className="title">{section.title.toUpperCase()}</h1>
         <span className="subtitle">SHOP NOW</span>
       </div>
     </div>
   );
 };
 
-export default MenuItem;
+export default withRouter(MenuItem);
